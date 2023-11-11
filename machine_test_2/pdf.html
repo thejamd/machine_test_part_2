@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Export to PDF</title>
+
+    <!-- Include jspdf library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin: 20px auto;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>John Doe</td>
+                <td>john@example.com</td>
+                <td>123-456-7890</td>
+            </tr>
+            <tr>
+                <td>Jane Smith</td>
+                <td>jane@example.com</td>
+                <td>987-654-3210</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button onclick="exportToPDF()">Export to PDF</button>
+
+    <script>
+        function exportToPDF() {
+            // Create a new jsPDF instance
+            const pdf = new jsPDF();
+
+            // Get the table element
+            const table = document.getElementById("dataTable");
+
+            // Convert the table to a Data URL
+            const dataUrl = tableToDataURL(table);
+
+            // Add an image of the table to the PDF
+            pdf.addImage(dataUrl, 'JPEG', 10, 10, 180, 150);
+
+            // Save the PDF file
+            pdf.save("exported_data.pdf");
+        }
+
+        function tableToDataURL(table) {
+            // Convert the table to a Data URL using HTML2Canvas
+            return new Promise((resolve) => {
+                html2canvas(table).then(canvas => {
+                    resolve(canvas.toDataURL("image/jpeg"));
+                });
+            });
+        }
+    </script>
+
+</body>
+</html>

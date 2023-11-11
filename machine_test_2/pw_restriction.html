@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+
+        #loginAttempts {
+            color: red;
+            font-weight: bold;
+        }
+
+        #loginResult {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <h2>Login</h2>
+        <label for="username">Username:</label>
+        <input type="text" id="username" placeholder="Enter your username"><br><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" placeholder="Enter your password"><br><br>
+
+        <button onclick="attemptLogin()">Login</button>
+
+        <div id="loginAttempts">Remaining login attempts: 3</div>
+        <div id="loginResult"></div>
+    </div>
+
+    <script>
+        let remainingAttempts = 3;
+
+        function attemptLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Your authentication logic here (simplified)
+            if (username === 'user' && password === 'pass') {
+                document.getElementById('loginResult').innerText = 'Login successful!';
+            } else {
+                remainingAttempts--;
+
+                if (remainingAttempts > 0) {
+                    document.getElementById('loginAttempts').innerText = `Remaining login attempts: ${remainingAttempts}`;
+                } else {
+                    document.getElementById('loginAttempts').innerText = 'Account locked. Try again after 30 minutes.';
+                    document.getElementById('username').disabled = true;
+                    document.getElementById('password').disabled = true;
+                    setTimeout(resetLogin, 1800000); // 30 minutes lockout
+                }
+
+                document.getElementById('loginResult').innerText = 'Login failed. Please try again.';
+            }
+        }
+
+        function resetLogin() {
+            remainingAttempts = 3;
+            document.getElementById('loginAttempts').innerText = `Remaining login attempts: ${remainingAttempts}`;
+            document.getElementById('loginResult').innerText = '';
+            document.getElementById('username').disabled = false;
+            document.getElementById('password').disabled = false;
+        }
+    </script>
+
+</body>
+</html>
